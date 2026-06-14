@@ -6,8 +6,8 @@ Welcome to the **Aether AI** production-ready codebase. This workspace houses a 
 
 ## Live Deployments & Repository Details
 
-*   **Vercel Live URL**: [https://aether-ai-workspace.vercel.app]([https://aether-ai-workspace.vercel.app](https://aether-m3cnjyrnq-harish-ms-projects-cf2fbd35.vercel.app/))
-*   **Git Repository**: [https://github.com/kirubakaran/aether-ai]([https://github.com/kirubakaran/aether-ai](https://github.com/harishmarimuthu13022003/ai_agent_marketing_site.))
+*   **Vercel Live URL**: (https://aether-m3cnjyrnq-harish-ms-projects-cf2fbd35.vercel.app/)
+*   **Git Repository**:(https://github.com/harishmarimuthu13022003/ai_agent_marketing_site.)
 
 ---
 
