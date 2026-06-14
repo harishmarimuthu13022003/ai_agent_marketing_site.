@@ -3,8 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import * as yup from 'yup';
 import { api } from '../../../lib/api';
 import { Cpu, UserPlus, AlertCircle, RefreshCw } from 'lucide-react';
+
+const registerSchema = yup.object().shape({
+  name: yup.string().trim().required('Name is required'),
+  email: yup.string().trim().email('Please add a valid email').required('Email is required'),
+  password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+  role: yup.string().oneOf(['user', 'admin']).required('Role is required')
+});
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -23,18 +31,15 @@ export default function Register() {
     }
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Validations
-    if (!name || !email || !password) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+    // Validations with Yup schema
+    try {
+      await registerSchema.validate({ name, email, password, role }, { abortEarly: false });
+    } catch (err: any) {
+      setError(err.errors ? err.errors.join(', ') : err.message);
       return;
     }
 

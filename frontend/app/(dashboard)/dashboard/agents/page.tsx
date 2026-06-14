@@ -1,15 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { api } from '../../../../lib/api';
+import { api, Agent, User } from '../../../../lib/api';
 import { 
   Plus, Edit2, Trash2, Search, X, Cpu, 
-  HelpCircle, Sliders, Play, Pause, AlertTriangle, RefreshCw,
+  Sliders, Play, AlertTriangle, RefreshCw,
   ExternalLink
 } from 'lucide-react';
+import { Button } from '../../../../components/ui/button';
+import { Input } from '../../../../components/ui/input';
 
 export default function AgentsDashboard() {
-  const [agents, setAgents] = useState([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -18,7 +20,7 @@ export default function AgentsDashboard() {
   // Modal States
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
 
   // Form Fields
   const [formData, setFormData] = useState({
@@ -37,7 +39,7 @@ export default function AgentsDashboard() {
     try {
       const res = await api.agents.getAll(searchTerm);
       setAgents(res.data || []);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Failed to load agents');
     } finally {
       setLoading(false);
@@ -48,7 +50,7 @@ export default function AgentsDashboard() {
     loadAgents();
   }, []);
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     loadAgents(search);
   };
@@ -68,14 +70,14 @@ export default function AgentsDashboard() {
     setIsFormOpen(true);
   };
 
-  const openEditModal = (agent) => {
+  const openEditModal = (agent: Agent) => {
     setSelectedAgent(agent);
     setFormData({
       name: agent.name || '',
       type: agent.type || 'support',
       status: agent.status || 'idle',
       description: agent.config?.description || '',
-      temperature: agent.config?.temperature || 0.7,
+      temperature: agent.config?.temperature ?? 0.7,
       systemPrompt: agent.config?.systemPrompt || '',
       agentApi: agent.config?.agentApi || ''
     });
@@ -83,13 +85,15 @@ export default function AgentsDashboard() {
     setIsFormOpen(true);
   };
 
-  const openDeleteModal = (agent) => {
+  const openDeleteModal = (agent: Agent) => {
     setSelectedAgent(agent);
     setError('');
     setIsDeleteOpen(true);
   };
 
-  const handleFormChange = (e) => {
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -97,7 +101,7 @@ export default function AgentsDashboard() {
     }));
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -110,11 +114,11 @@ export default function AgentsDashboard() {
     setSubmitting(true);
     const agentPayload = {
       name: formData.name,
-      type: formData.type,
-      status: formData.status,
+      type: formData.type as 'support' | 'research' | 'workflow' | 'custom',
+      status: formData.status as 'active' | 'idle' | 'failed',
       config: {
         description: formData.description,
-        temperature: parseFloat(formData.temperature) || 0.7,
+        temperature: parseFloat(formData.temperature as any) || 0.7,
         systemPrompt: formData.systemPrompt,
         agentApi: formData.agentApi
       }
@@ -130,7 +134,7 @@ export default function AgentsDashboard() {
       }
       setIsFormOpen(false);
       loadAgents(search);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Failed to save agent');
     } finally {
       setSubmitting(false);
@@ -145,14 +149,14 @@ export default function AgentsDashboard() {
       await api.agents.delete(selectedAgent._id);
       setIsDeleteOpen(false);
       loadAgents(search);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Failed to delete agent');
     } finally {
       setSubmitting(false);
     }
   };
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
         return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-emerald-500/10 text-emerald-400">active</span>;
@@ -163,7 +167,7 @@ export default function AgentsDashboard() {
     }
   };
 
-  const getAgentIcon = (type) => {
+  const getAgentIcon = (type: string) => {
     switch (type) {
       case 'support':
         return <Cpu className="h-5 w-5 text-emerald-400" />;
@@ -184,33 +188,34 @@ export default function AgentsDashboard() {
           <h1 className="text-3xl font-extrabold tracking-tight text-white">AI Agents Workspace</h1>
           <p className="text-slate-400 text-sm mt-1">Configure and manage autonomous pipelines.</p>
         </div>
-        <button
+        <Button
           onClick={openCreateModal}
-          className="px-5 py-2.5 bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white rounded-xl text-sm font-bold flex items-center justify-center space-x-2 transition-all duration-200 shadow-md shadow-brand-900/30 hover:scale-[1.02] active:scale-[0.98] self-start sm:self-auto"
+          className="self-start sm:self-auto hover:scale-[1.02]"
         >
           <Plus className="h-4.5 w-4.5 stroke-[2.5]" />
           <span>New Agent</span>
-        </button>
+        </Button>
       </div>
 
       {/* Search Bar Form */}
-      <form onSubmit={handleSearchSubmit} className="flex space-x-3 max-w-md">
+      <form onSubmit={handleSearchSubmit} className="flex space-x-3 max-w-md items-center">
         <div className="relative flex-grow">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-          <input
+          <Input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search agents by name..."
-            className="w-full bg-dark-900 border border-dark-850 hover:border-dark-750 focus:border-brand-500 focus:outline-none rounded-lg pl-9 pr-4 py-2 text-sm text-white transition-colors"
+            className="pl-9 bg-dark-900/60 border-dark-850 hover:border-dark-750"
           />
         </div>
-        <button
+        <Button
           type="submit"
-          className="px-4 py-2 bg-dark-900 border border-dark-850 hover:bg-dark-800 text-slate-300 hover:text-white rounded-lg text-sm font-medium transition-colors"
+          variant="secondary"
+          className="h-11 px-4 py-2"
         >
           Find
-        </button>
+        </Button>
       </form>
 
       {/* Main List Area */}
@@ -228,12 +233,11 @@ export default function AgentsDashboard() {
           <p className="text-slate-500 text-sm max-w-sm mx-auto">
             You don't have any agent tasks running yet. Create your first autonomous support or research agent container to begin.
           </p>
-          <button
+          <Button
             onClick={openCreateModal}
-            className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-sm font-semibold transition-colors"
           >
             Create Agent
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -258,8 +262,8 @@ export default function AgentsDashboard() {
                 </p>
 
                 <div className="pt-2 flex items-center justify-between text-xs text-slate-500 border-t border-dark-900/60">
-                  <span>Temp: {agent.config?.temperature || 0.7}</span>
-                  <span className="truncate max-w-[120px]">Owner: {agent.owner?.name || 'You'}</span>
+                  <span>Temp: {agent.config?.temperature ?? 0.7}</span>
+                  <span className="truncate max-w-[120px]">Owner: {typeof agent.owner === 'object' ? agent.owner?.name : 'You'}</span>
                 </div>
                 {agent.config?.agentApi && (
                   <div className="mt-2 pt-1 text-[11px] text-slate-500 truncate border-t border-dark-900/40">
@@ -279,18 +283,22 @@ export default function AgentsDashboard() {
                   <span>{agent.config?.agentApi ? 'Custom API Link' : 'Live API Link'}</span>
                 </a>
                 <div className="flex space-x-2">
-                  <button
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => openEditModal(agent)}
-                    className="p-2 bg-dark-900 hover:bg-dark-800 border border-dark-850 hover:border-dark-750 text-slate-300 hover:text-white rounded-lg transition-colors"
+                    className="p-2 h-9 w-9 rounded-lg"
                   >
                     <Edit2 className="h-3.5 w-3.5" />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
                     onClick={() => openDeleteModal(agent)}
-                    className="p-2 bg-red-950/20 hover:bg-red-950/40 border border-red-900/40 hover:border-red-800/50 text-red-300 hover:text-red-200 rounded-lg transition-colors"
+                    className="p-2 h-9 w-9 bg-red-950/20 border border-red-900/40 hover:bg-red-650 hover:text-white"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -325,13 +333,12 @@ export default function AgentsDashboard() {
                 <label className="block text-slate-300 font-semibold text-xs uppercase tracking-wider mb-2">
                   Agent Name
                 </label>
-                <input
+                <Input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleFormChange}
                   placeholder="e.g. support-bot-invoice"
-                  className="w-full bg-dark-900 border border-dark-850 hover:border-dark-750 focus:border-brand-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm text-white"
                 />
               </div>
 
@@ -344,7 +351,7 @@ export default function AgentsDashboard() {
                     name="type"
                     value={formData.type}
                     onChange={handleFormChange}
-                    className="w-full bg-dark-900 border border-dark-850 focus:border-brand-500 focus:outline-none rounded-xl px-3 py-2.5 text-sm text-white"
+                    className="w-full bg-dark-900 border border-dark-850 focus:border-brand-500 focus:outline-none rounded-xl px-3 py-2.5 text-sm text-white h-11"
                   >
                     <option value="support">Customer Support</option>
                     <option value="research">Deep Research</option>
@@ -361,7 +368,7 @@ export default function AgentsDashboard() {
                     name="status"
                     value={formData.status}
                     onChange={handleFormChange}
-                    className="w-full bg-dark-900 border border-dark-850 focus:border-brand-500 focus:outline-none rounded-xl px-3 py-2.5 text-sm text-white"
+                    className="w-full bg-dark-900 border border-dark-850 focus:border-brand-500 focus:outline-none rounded-xl px-3 py-2.5 text-sm text-white h-11"
                   >
                     <option value="idle">Idle</option>
                     <option value="active">Active</option>
@@ -376,11 +383,11 @@ export default function AgentsDashboard() {
                 </label>
                 <textarea
                   name="description"
-                  rows="2"
+                  rows={2}
                   value={formData.description}
                   onChange={handleFormChange}
                   placeholder="Summarize the core execution task assigned to this agent..."
-                  className="w-full bg-dark-900 border border-dark-850 focus:border-brand-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                  className="w-full bg-slate-900/60 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm text-white hover:border-slate-700 transition-colors"
                 />
               </div>
 
@@ -409,11 +416,11 @@ export default function AgentsDashboard() {
                 </label>
                 <textarea
                   name="systemPrompt"
-                  rows="3"
+                  rows={3}
                   value={formData.systemPrompt}
                   onChange={handleFormChange}
                   placeholder="You are an AI research specialist designed to scan logs..."
-                  className="w-full bg-dark-900 border border-dark-850 focus:border-brand-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm text-white font-mono text-xs"
+                  className="w-full bg-slate-900/60 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm text-white font-mono text-xs hover:border-slate-700 transition-colors"
                 />
               </div>
 
@@ -421,32 +428,31 @@ export default function AgentsDashboard() {
                 <label className="block text-slate-300 font-semibold text-xs uppercase tracking-wider mb-2">
                   Agent API Endpoint
                 </label>
-                <input
+                <Input
                   type="text"
                   name="agentApi"
                   value={formData.agentApi}
                   onChange={handleFormChange}
                   placeholder="e.g. https://api.aether.ai/v1/agents/my-agent"
-                  className="w-full bg-dark-900 border border-dark-850 hover:border-dark-750 focus:border-brand-500 focus:outline-none rounded-xl px-4 py-2.5 text-sm text-white"
                 />
               </div>
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-dark-900">
-                <button
+                <Button
+                  variant="ghost"
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="px-4 py-2 bg-dark-900 border border-dark-850 hover:bg-dark-800 text-slate-300 hover:text-white rounded-lg text-sm font-semibold transition-colors"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1.5"
+                  className="flex items-center space-x-1.5"
                 >
                   {submitting && <RefreshCw className="h-4.5 w-4.5 animate-spin mr-1" />}
                   <span>{selectedAgent ? 'Save Changes' : 'Deploy'}</span>
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -469,20 +475,21 @@ export default function AgentsDashboard() {
             )}
 
             <div className="flex justify-end space-x-3">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setIsDeleteOpen(false)}
-                className="px-4 py-2 bg-dark-900 border border-dark-850 hover:bg-dark-800 text-slate-300 hover:text-white rounded-lg text-sm font-semibold transition-colors"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="destructive"
                 onClick={handleDeleteSubmit}
                 disabled={submitting}
-                className="px-4 py-2 bg-red-650 hover:bg-red-500 text-white rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1.5"
+                className="flex items-center space-x-1.5"
               >
                 {submitting && <RefreshCw className="h-4.5 w-4.5 animate-spin mr-1" />}
                 <span>Confirm Delete</span>
-              </button>
+              </Button>
             </div>
           </div>
         </div>

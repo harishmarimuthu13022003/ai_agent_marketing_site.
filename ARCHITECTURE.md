@@ -63,16 +63,23 @@ We have partitioned the workspace into isolated `/backend` and `/frontend` direc
 ### Frontend Layout
 ```
 /frontend
-├── app/                # Next.js App Router folders
+├── app/                # Next.js App Router folders (TypeScript .tsx/.ts files)
 │   ├── (marketing)/    # Route group for landing, services, and login views (with Nav/Footer)
 │   ├── (dashboard)/    # Route group for protected admin/user workspace (with Sidebar layout)
 │   └── globals.css     # Global styles and tailwind directives
-├── components/         # Shared presentation elements (Navbar, Footer)
-├── lib/                # API client helper functions and state checks
+├── components/         # Presentation elements
+│   ├── ui/             # shadcn/ui components (Button, Input)
+│   ├── Footer.tsx      # Core Footer component
+│   └── Navbar.tsx      # Core Navbar component
+├── lib/                # API client helper functions, state checks, and utility tools (utils.ts)
+├── components.json     # shadcn/ui configuration settings
+├── declarations.d.ts   # Wildcard css types declaration file
+├── tsconfig.json       # TypeScript configuration settings
 ├── postcss.config.js   # CSS compiler setup
 └── tailwind.config.js  # Styling spacing tokens and brand palettes
 ```
 **Reasoning**: Next.js App Router groups (e.g. `(marketing)` and `(dashboard)`) allow us to apply different layouts (e.g. sidebar vs. navbar) automatically depending on routing path names.
+
 
 ---
 
@@ -111,6 +118,21 @@ We have partitioned the workspace into isolated `/backend` and `/frontend` direc
 3.  **Client Headers**: Every subsequent client query to the backend sets `Authorization: Bearer <token>` in the fetch headers.
 4.  **Route Protection (`protect`)**: Middleware interceptor extracts the token, decodes the user ID, verifies credentials against the DB, and sets `req.user` inside the execution scope.
 5.  **Role Verification (`authorize('admin')`)**: A downstream middleware interceptor audits the user's role before letting request resolve.
+
+---
+
+## Request & Input Validation Layer
+
+To ensure strict data validation and type safety across network layers, we use **Yup** validation schemas on both the frontend forms and the backend endpoints:
+
+### 1. Backend Validation Schema Middleware (`validate.js`)
+All write operations (POST/PUT) pass through a schema-validating middleware. This schema enforces structural rules and sanitizes inbound bodies before they hit database controllers:
+*   **Registration Schema**: Enforces name length (min 2), unique formatted email, password length (min 6), and role matching.
+*   **Login Schema**: Enforces presence of email and password credentials.
+*   **Agent Configuration Schema**: Audits agent name (min 2), type enumerations, status classifications, and configuration object structures (description, temperature range 0.0 - 1.0, systemPrompt, agentApi).
+
+### 2. Frontend Form Guarding
+Forms (Login and Register) validate inputs client-side using mirror Yup schemas before initiating network requests. This ensures immediate UI errors and saves server bandwidth.
 
 ---
 

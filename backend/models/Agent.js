@@ -21,6 +21,7 @@ const AgentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    index: true,
   },
   config: {
     description: { type: String, default: '' },

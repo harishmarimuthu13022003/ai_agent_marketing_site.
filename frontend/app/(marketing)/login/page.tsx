@@ -3,8 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import * as yup from 'yup';
 import { api } from '../../../lib/api';
 import { LogIn, Cpu, AlertCircle, RefreshCw } from 'lucide-react';
+
+const loginSchema = yup.object().shape({
+  email: yup.string().trim().email('Please add a valid email').required('Email is required'),
+  password: yup.string().required('Password is required')
+});
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -22,13 +28,14 @@ export default function Login() {
     }
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
-    // Validation checks
-    if (!email || !password) {
-      setError('Please fill in all fields');
+    try {
+      await loginSchema.validate({ email, password }, { abortEarly: false });
+    } catch (err: any) {
+      setError(err.errors ? err.errors.join(', ') : err.message);
       return;
     }
 
@@ -38,7 +45,7 @@ export default function Login() {
       await api.auth.login(email, password);
       router.push('/dashboard');
       router.refresh();
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Login failed. Please verify credentials.');
     } finally {
       setLoading(false);

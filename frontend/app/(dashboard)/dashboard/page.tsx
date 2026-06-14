@@ -2,13 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { api } from '../../../lib/api';
+import { api, User } from '../../../lib/api';
 import { Cpu, Users, LineChart, Shield, ArrowRight, Zap, RefreshCw } from 'lucide-react';
 
+interface StatItem {
+  name: string;
+  value: string | number;
+  icon: React.ComponentType<any>;
+  color: string;
+}
+
 export default function DashboardOverview() {
-  const [user, setUser] = useState(null);
-  const [agentCount, setAgentCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [agentCount, setAgentCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const currentUser = api.auth.getCurrentUser();
@@ -29,7 +36,7 @@ export default function DashboardOverview() {
     fetchAgents();
   }, []);
 
-  const stats = [
+  const stats: StatItem[] = [
     { name: 'Active Agents', value: loading ? '-' : agentCount, icon: Cpu, color: 'text-brand-400' },
     { name: 'Avg. API Latency', value: '24ms', icon: LineChart, color: 'text-violet-400' },
     { name: 'Pipeline success', value: '99.8%', icon: Zap, color: 'text-emerald-400' },

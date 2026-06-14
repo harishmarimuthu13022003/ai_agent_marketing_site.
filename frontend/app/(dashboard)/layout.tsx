@@ -3,15 +3,21 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { api } from '../../lib/api';
+import { api, User } from '../../lib/api';
 import { 
   Cpu, LayoutDashboard, Settings, Users, LogOut, 
   Menu, X, RefreshCw, ChevronRight, UserCheck 
 } from 'lucide-react';
 
-export default function DashboardLayout({ children }) {
+interface MenuItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<any>;
+}
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -43,7 +49,7 @@ export default function DashboardLayout({ children }) {
     );
   }
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'AI Agents', href: '/dashboard/agents', icon: Cpu },
   ];

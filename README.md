@@ -91,13 +91,14 @@ npm run dev
 
 ## How I Used AI
 
-This application was engineered with the assistance of **Antigravity (built by Google DeepMind)** to speed up scaffolding, layout planning, and database modeling.
+This application was engineered with the assistance of **Antigravity (built by Google DeepMind)** and **ChatGPT (OpenAI)** to speed up scaffolding, layout planning, database modeling, and styling decisions.
 
-### 1. Tools Utilized
-*   **Antigravity Coding Assistant**: Used for database schema setups, layout file scaffolding, and writing the API integration client.
+### 1. Tools & Responsibilities
+*   **Antigravity (Google DeepMind)**: Handled complex code generation, full TypeScript conversion, `components.json` layout initializations, Yup schema validation middleware hooks (frontend/backend), and local Next.js verification compilation runs.
+*   **ChatGPT (OpenAI)**: Used to draft landing page copy, design harmonized Tailwind CSS gradient cards, and debug initial Express route configuration structures.
 
 ### 2. Output Accepted As-Is
-The prompt to generate the **User Mongoose Schema** (`backend/models/User.js`) including the password hashing hook was accepted as-is:
+The prompt to generate the **User Mongoose Schema** (`backend/models/User.js`) pre-save password hashing hook was accepted from ChatGPT/Antigravity as-is:
 ```javascript
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) { return next(); }
@@ -106,8 +107,9 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 ```
-This saved time configuring the bcrypt hook manually and kept the security logic in the model layer.
+This cleanly automated database password hashing within the schema middleware layer without needing manual implementation.
 
 ### 3. AI Mistake & Human Correction
-*   **The Issue**: The AI assistant attempted to run `npm install` on the Windows platform using the standard PowerShell terminal. However, the system had restrictive script execution policies preventing execution of `npm.ps1`.
-*   **The Correction**: I intercepted the error state and directed the command execution using the command shell wrapper (`cmd.exe /c npm install`), bypassing the local PowerShell restriction policy and allowing dependencies to install correctly.
+*   **The Issue**: The AI assistant tried to execute terminal setup scripts (`npm install`) directly on the host Windows system via PowerShell. The command failed because the Windows environment had a restrictive script execution policy preventing the execution of `npm.ps1` scripts.
+*   **The Correction**: We bypassed the PowerShell policy restriction by invoking the Command Prompt shell directly via `cmd /c npm install ...` and `cmd /c npm run build`, which correctly loads the `.cmd` version of the npm executable instead of the blocked `.ps1` wrapper script.
+

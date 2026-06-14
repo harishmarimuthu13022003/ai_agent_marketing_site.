@@ -1,27 +1,28 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { api } from '../../../../lib/api';
+import { api, User } from '../../../../lib/api';
 import { 
   Users, Trash2, ShieldAlert, Edit, CheckCircle, 
   X, RefreshCw, AlertTriangle 
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Button } from '../../../../components/ui/button';
 
 export default function UsersDashboard() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [error, setError] = useState('');
 
   // Modals
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   // Edit State
-  const [editRole, setEditRole] = useState('user');
+  const [editRole, setEditRole] = useState<'user' | 'admin'>('user');
 
   const router = useRouter();
 
@@ -31,7 +32,7 @@ export default function UsersDashboard() {
     try {
       const res = await api.users.getAll();
       setUsers(res.data || []);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Access denied or server error loading users.');
     } finally {
       setLoading(false);
@@ -50,29 +51,29 @@ export default function UsersDashboard() {
     }
   }, []);
 
-  const openEditModal = (userToEdit) => {
+  const openEditModal = (userToEdit: User) => {
     setSelectedUser(userToEdit);
     setEditRole(userToEdit.role);
     setError('');
     setIsEditOpen(true);
   };
 
-  const openDeleteModal = (userToDelete) => {
+  const openDeleteModal = (userToDelete: User) => {
     setSelectedUser(userToDelete);
     setError('');
     setIsDeleteOpen(true);
   };
 
-  const handleEditSubmit = async (e) => {
+  const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedUser) return;
     setSubmitting(true);
     setError('');
     try {
-      await api.users.update(selectedUser._id, { role: editRole });
+      await api.users.update(selectedUser._id || selectedUser.id, { role: editRole });
       setIsEditOpen(false);
       loadUsers();
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Failed to update user role');
     } finally {
       setSubmitting(false);
@@ -84,10 +85,10 @@ export default function UsersDashboard() {
     setSubmitting(true);
     setError('');
     try {
-      await api.users.delete(selectedUser._id);
+      await api.users.delete(selectedUser._id || selectedUser.id);
       setIsDeleteOpen(false);
       loadUsers();
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Failed to delete user');
     } finally {
       setSubmitting(false);
@@ -104,12 +105,12 @@ export default function UsersDashboard() {
         <p className="text-slate-400 text-sm leading-relaxed">
           Standard User accounts are not authorized to view the user logs or audit tenant records. Please sign out and sign in using administrative credentials to access this system.
         </p>
-        <button
+        <Button
           onClick={() => router.push('/dashboard')}
-          className="px-5 py-2.5 bg-dark-900 border border-dark-800 hover:bg-dark-850 text-white rounded-xl text-sm font-bold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-md"
+          variant="secondary"
         >
           Back to Overview
-        </button>
+        </Button>
       </div>
     );
   }
@@ -150,13 +151,13 @@ export default function UsersDashboard() {
             </thead>
             <tbody className="divide-y divide-dark-900">
               {users.map((user) => (
-                <tr key={user._id} className="hover:bg-dark-900/10 transition-colors">
+                <tr key={user._id || user.id} className="hover:bg-dark-900/10 transition-colors">
                   <td className="py-4 px-6 font-medium text-white flex items-center space-x-2">
                     <div className="w-7 h-7 rounded bg-brand-500/10 flex items-center justify-center text-brand-400 font-mono text-xs">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
                     <span>{user.name}</span>
-                    {currentUser && currentUser.id === user._id && (
+                    {currentUser && (currentUser.id === user._id || currentUser._id === user._id) && (
                       <span className="text-[9px] px-1 py-0.25 bg-dark-800 text-slate-500 rounded font-semibold">You</span>
                     )}
                   </td>
@@ -171,28 +172,32 @@ export default function UsersDashboard() {
                     </span>
                   </td>
                   <td className="py-4 px-6 text-slate-400">
-                    {new Date(user.createdAt).toLocaleDateString(undefined, {
+                    {user.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric'
-                    })}
+                    }) : 'N/A'}
                   </td>
                   <td className="py-4 px-6 text-right space-x-2">
-                    <button
+                    <Button
+                      variant="secondary"
+                      size="sm"
                       onClick={() => openEditModal(user)}
-                      className="p-1.5 bg-dark-900 hover:bg-dark-800 border border-dark-850 text-slate-400 hover:text-white rounded-lg transition-colors"
+                      className="p-1.5 h-8 w-8 rounded-lg inline-flex items-center justify-center"
                       title="Adjust User Role"
                     >
                       <Edit className="h-3.5 w-3.5" />
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
                       onClick={() => openDeleteModal(user)}
-                      disabled={currentUser && currentUser.id === user._id}
-                      className="p-1.5 bg-red-950/20 hover:bg-red-950/40 border border-red-900/40 disabled:opacity-40 disabled:cursor-not-allowed text-red-300 hover:text-red-200 rounded-lg transition-colors"
-                      title={currentUser && currentUser.id === user._id ? "You cannot delete yourself" : "Delete User"}
+                      disabled={currentUser && (currentUser.id === user._id || currentUser._id === user._id)}
+                      className="p-1.5 h-8 w-8 rounded-lg inline-flex items-center justify-center"
+                      title={currentUser && (currentUser.id === user._id || currentUser._id === user._id) ? "You cannot delete yourself" : "Delete User"}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -229,7 +234,7 @@ export default function UsersDashboard() {
                     className={`py-2 px-4 rounded-xl border text-sm font-semibold transition-all ${
                       editRole === 'user'
                         ? 'border-brand-500 bg-brand-500/10 text-white'
-                        : 'border-dark-800 bg-dark-900/40 text-slate-400 hover:border-dark-750'
+                        : 'border-dark-800 bg-dark-900/40 text-slate-400 hover:border-dark-755'
                     }`}
                   >
                     Standard User
@@ -240,7 +245,7 @@ export default function UsersDashboard() {
                     className={`py-2 px-4 rounded-xl border text-sm font-semibold transition-all ${
                       editRole === 'admin'
                         ? 'border-brand-500 bg-brand-500/10 text-white'
-                        : 'border-dark-800 bg-dark-900/40 text-slate-400 hover:border-dark-750'
+                        : 'border-dark-800 bg-dark-900/40 text-slate-400 hover:border-dark-755'
                     }`}
                   >
                     Administrator
@@ -249,21 +254,21 @@ export default function UsersDashboard() {
               </div>
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-dark-900">
-                <button
+                <Button
+                  variant="ghost"
                   type="button"
                   onClick={() => setIsEditOpen(false)}
-                  className="px-4 py-2 bg-dark-900 border border-dark-850 hover:bg-dark-800 text-slate-300 hover:text-white rounded-lg text-sm font-semibold transition-colors"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1"
+                  className="flex items-center space-x-1"
                 >
                   {submitting && <RefreshCw className="h-4.5 w-4.5 animate-spin mr-1" />}
                   <span>Save Role</span>
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -280,20 +285,21 @@ export default function UsersDashboard() {
             </p>
 
             <div className="flex justify-end space-x-3">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setIsDeleteOpen(false)}
-                className="px-4 py-2 bg-dark-900 border border-dark-850 hover:bg-dark-800 text-slate-300 hover:text-white rounded-lg text-sm font-semibold transition-colors"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="destructive"
                 onClick={handleDeleteSubmit}
                 disabled={submitting}
-                className="px-4 py-2 bg-red-650 hover:bg-red-500 text-white rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1"
+                className="flex items-center space-x-1"
               >
                 {submitting && <RefreshCw className="h-4.5 w-4.5 animate-spin mr-1" />}
                 <span>Confirm Delete</span>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
