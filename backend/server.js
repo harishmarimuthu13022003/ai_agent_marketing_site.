@@ -138,7 +138,26 @@ const seedDatabase = async () => {
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:5173',
+  process.env.LOCAL_FRONTEND_URL,
+  process.env.LIVE_FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (process.env.NODE_ENV !== 'production' || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+      return callback(null, true);
+    } else {
+      console.warn(`CORS request from untrusted origin: ${origin}. Request permitted for demo.`);
+      return callback(null, true);
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes

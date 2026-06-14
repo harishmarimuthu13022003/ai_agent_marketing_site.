@@ -1,4 +1,8 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (
+  process.env.NODE_ENV === 'development'
+    ? (process.env.NEXT_PUBLIC_LOCAL_API_URL || 'http://localhost:5000/api')
+    : (process.env.NEXT_PUBLIC_LIVE_API_URL || 'https://ai-agent-marketing-site.onrender.com/api')
+);
 
 const getHeaders = () => {
   const headers = {
