@@ -1,0 +1,113 @@
+# Aether AI - Marketing Site & Workspace Dashboard
+
+Welcome to the **Aether AI** production-ready codebase. This workspace houses a public-facing corporate website alongside an authenticated dashboard containing full CRUD capabilities for Users and AI Agents, backed by MongoDB.
+
+---
+
+## Live Deployments & Repository Details
+
+*   **Vercel Live URL**: [https://aether-ai-workspace.vercel.app](https://aether-ai-workspace.vercel.app)
+*   **Git Repository**: [https://github.com/kirubakaran/aether-ai](https://github.com/kirubakaran/aether-ai)
+
+---
+
+## Test Credentials
+
+To test the role-based dashboard access, you can register new accounts using the registration screen (which includes a role selector for convenient testing), or utilize these pre-seeded demo accounts:
+
+### Administrator Account
+*   **Email**: `admin@aether.ai`
+*   **Password**: `admin123`
+*   **Role Permission**: Full user auditing logs + CRUD capability for all agent pools.
+
+### Standard User Account
+*   **Email**: `user@aether.ai`
+*   **Password**: `user123`
+*   **Role Permission**: Confined strictly to creating and editing their own configured agents.
+
+---
+
+## Environment Configuration
+
+Copy the sample configurations and input your local or production credentials.
+
+### Backend Configurations (`/backend/.env`)
+Create a file at `/backend/.env` with:
+```env
+PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/aether-ai
+JWT_SECRET=aether_secret_key_123_abc_xyz
+JWT_EXPIRE=30d
+NODE_ENV=development
+```
+
+### Frontend Configurations (`/frontend/.env.local`)
+Create a file at `/frontend/.env.local` with:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
+---
+
+## Local Setup & Launch Instructions
+
+### Prerequisites
+- Node.js (v18+ recommended)
+- MongoDB instance running locally (or MongoDB Atlas URI)
+
+### 1. Launch Express Backend
+```bash
+cd backend
+npm install
+npm start
+```
+*The server will start listening at `http://localhost:5000`.*
+
+### 2. Launch Next.js Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Open your browser and navigate to `http://localhost:3000`.*
+
+---
+
+## Project Status
+
+### What is Completed:
+*   **Public Landing Pages**: Responsive landing page containing 7 sections (Hero, logo strip, features, testimonials, pricing plans, accordion FAQs, and footer).
+*   **Corporate Sub-pages**: Detailed About Us story/mission and Services breakdown page.
+*   **Role-Based Access Control**: Route protections, password hashing using `bcryptjs`, and stateless JWT authentication verifying permissions.
+*   **Agents Workspace CRUD**: Searchable list, create and update settings, and delete modals calling backend endpoints.
+*   **Admin Auditing Dashboard**: Fully operational table list, user role toggles, and safety safeguards (e.g. preventing self-deletion).
+*   **CI/CD Pipeline**: GitHub Actions workflow verifying lock installations and compiling Next.js without syntax exceptions.
+
+### What is Deferred / Future scope:
+*   **Database Sync Retries**: Add exponential retry queues if connection strings drift.
+*   **Interactive Agent Shell**: Inline terminal to let users trigger agent run simulations directly from the dashboard.
+
+---
+
+## How I Used AI
+
+This application was engineered with the assistance of **Antigravity (built by Google DeepMind)** to speed up scaffolding, layout planning, and database modeling.
+
+### 1. Tools Utilized
+*   **Antigravity Coding Assistant**: Used for database schema setups, layout file scaffolding, and writing the API integration client.
+
+### 2. Output Accepted As-Is
+The prompt to generate the **User Mongoose Schema** (`backend/models/User.js`) including the password hashing hook was accepted as-is:
+```javascript
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) { return next(); }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+```
+This saved time configuring the bcrypt hook manually and kept the security logic in the model layer.
+
+### 3. AI Mistake & Human Correction
+*   **The Issue**: The AI assistant attempted to run `npm install` on the Windows platform using the standard PowerShell terminal. However, the system had restrictive script execution policies preventing execution of `npm.ps1`.
+*   **The Correction**: I intercepted the error state and directed the command execution using the command shell wrapper (`cmd.exe /c npm install`), bypassing the local PowerShell restriction policy and allowing dependencies to install correctly.
