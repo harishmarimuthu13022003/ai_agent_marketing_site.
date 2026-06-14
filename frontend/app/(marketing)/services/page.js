@@ -40,8 +40,8 @@ export default function Services() {
 
       {/* Hero Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8 mb-20 space-y-4">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white">Our Services & Solutions</h1>
-        <p className="text-slate-400 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white">Our Services & Solutions</h1>
+        <p className="text-slate-400/90 text-lg sm:text-xl md:text-xl/relaxed leading-relaxed max-w-3xl mx-auto font-medium">
           From developer sandboxes to scale production-grade operations, we provide the platform and development expertise.
         </p>
       </section>
@@ -56,12 +56,12 @@ export default function Services() {
                 <div className="w-12 h-12 rounded-xl bg-dark-900 border border-dark-850 flex items-center justify-center">
                   <Icon className="h-6 w-6" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-white">{item.title}</h2>
-                <p className="text-slate-400 text-sm sm:text-base leading-relaxed">{item.desc}</p>
+                <h2 className="text-2xl font-bold tracking-tight text-white">{item.title}</h2>
+                <p className="text-slate-400 text-base leading-relaxed">{item.desc}</p>
                 
                 <ul className="space-y-2 pt-2">
                   {item.points.map((pt, pIdx) => (
-                    <li key={pIdx} className="flex items-center space-x-2 text-sm text-slate-300 font-medium">
+                    <li key={pIdx} className="flex items-center space-x-2 text-sm text-slate-300 font-semibold">
                       <span className="w-1.5 h-1.5 rounded-full bg-brand-500" />
                       <span>{pt}</span>
                     </li>
@@ -76,8 +76,8 @@ export default function Services() {
       {/* Dynamic Architecture Callout */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="p-8 rounded-2xl bg-gradient-to-tr from-brand-950/20 via-dark-900/40 to-violet-950/20 border border-brand-500/15 text-center space-y-6">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Ready to automate your workflows?</h2>
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">Ready to automate your workflows?</h2>
+          <p className="text-slate-400/90 text-base leading-relaxed max-w-2xl mx-auto font-medium">
             Log in to access your authenticated agent builder dashboard, create new agent configurations, and start observing pipeline logs instantly.
           </p>
           <div className="flex justify-center pt-2">

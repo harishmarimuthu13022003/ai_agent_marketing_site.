@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../../../lib/api';
 import { 
   Plus, Edit2, Trash2, Search, X, Cpu, 
-  HelpCircle, Sliders, Play, Pause, AlertTriangle, RefreshCw
+  HelpCircle, Sliders, Play, Pause, AlertTriangle, RefreshCw,
+  ExternalLink
 } from 'lucide-react';
 
 export default function AgentsDashboard() {
@@ -176,14 +177,14 @@ export default function AgentsDashboard() {
       {/* Title Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">AI Agents Workspace</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-white">AI Agents Workspace</h1>
           <p className="text-slate-400 text-sm mt-1">Configure and manage autonomous pipelines.</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="px-4.5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-sm font-semibold flex items-center justify-center space-x-1.5 transition-colors self-start sm:self-auto"
+          className="px-5 py-2.5 bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-500 hover:to-violet-500 text-white rounded-xl text-sm font-bold flex items-center justify-center space-x-2 transition-all duration-200 shadow-md shadow-brand-900/30 hover:scale-[1.02] active:scale-[0.98] self-start sm:self-auto"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-4.5 w-4.5 stroke-[2.5]" />
           <span>New Agent</span>
         </button>
       </div>
@@ -258,19 +259,30 @@ export default function AgentsDashboard() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-dark-900 flex justify-end space-x-2">
-                <button
-                  onClick={() => openEditModal(agent)}
-                  className="p-2 bg-dark-900 hover:bg-dark-800 border border-dark-850 hover:border-dark-750 text-slate-300 hover:text-white rounded-lg transition-colors"
+              <div className="mt-6 pt-4 border-t border-dark-900 flex justify-between items-center">
+                <a 
+                  href={`http://localhost:5000/api/agents/${agent._id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold text-brand-400 hover:text-brand-300 flex items-center space-x-1.5 transition-colors"
                 >
-                  <Edit2 className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  onClick={() => openDeleteModal(agent)}
-                  className="p-2 bg-red-950/20 hover:bg-red-950/40 border border-red-900/40 hover:border-red-800/50 text-red-300 hover:text-red-200 rounded-lg transition-colors"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Live API Link</span>
+                </a>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => openEditModal(agent)}
+                    className="p-2 bg-dark-900 hover:bg-dark-800 border border-dark-850 hover:border-dark-750 text-slate-300 hover:text-white rounded-lg transition-colors"
+                  >
+                    <Edit2 className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() => openDeleteModal(agent)}
+                    className="p-2 bg-red-950/20 hover:bg-red-950/40 border border-red-900/40 hover:border-red-800/50 text-red-300 hover:text-red-200 rounded-lg transition-colors"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -288,7 +300,7 @@ export default function AgentsDashboard() {
               <X className="h-5 w-5" />
             </button>
 
-            <h2 className="text-xl font-bold text-white mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-white mb-6">
               {selectedAgent ? 'Update Agent Settings' : 'Deploy New Agent'}
             </h2>
 
@@ -422,7 +434,7 @@ export default function AgentsDashboard() {
       {isDeleteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-950/75 backdrop-blur-sm">
           <div className="w-full max-w-md p-6 rounded-xl glass-panel border border-red-900/20 shadow-2xl relative">
-            <h3 className="text-lg font-bold text-white mb-2">Confirm Agent Deletion</h3>
+            <h3 className="text-xl font-bold tracking-tight text-white mb-2">Confirm Agent Deletion</h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Are you sure you want to delete <strong className="text-white">{selectedAgent?.name}</strong>? This action cannot be undone and will immediately wipe all execution container history.
             </p>

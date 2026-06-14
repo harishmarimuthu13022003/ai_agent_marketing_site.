@@ -40,7 +40,7 @@ export default function DashboardOverview() {
       {/* Greetings Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Welcome back, {user?.name || 'Developer'}</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-white">Welcome back, {user?.name || 'Developer'}</h1>
           <p className="text-slate-400 text-sm mt-1">Here is a status summary of your Aether AI workspace.</p>
         </div>
         <div>
@@ -61,8 +61,8 @@ export default function DashboardOverview() {
           return (
             <div key={idx} className="p-6 rounded-xl glass-panel flex items-center justify-between">
               <div className="space-y-2">
-                <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">{stat.name}</p>
-                <h3 className="text-3xl font-black text-white">{stat.value}</h3>
+                <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">{stat.name}</p>
+                <h3 className="text-3xl sm:text-4xl font-black tracking-tight text-white">{stat.value}</h3>
               </div>
               <div className={`p-3 rounded-lg bg-dark-900 border border-dark-850 ${stat.color}`}>
                 <Icon className="h-6 w-6" />

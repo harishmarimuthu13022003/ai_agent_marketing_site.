@@ -47,8 +47,8 @@ export default function About() {
 
       {/* Hero Header */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8 mb-20 space-y-4">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white">Our Mission</h1>
-        <p className="text-slate-400 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white">Our Mission</h1>
+        <p className="text-slate-400/90 text-lg sm:text-xl md:text-xl/relaxed leading-relaxed max-w-3xl mx-auto font-medium">
           We build robust agent infrastructure so that modern organizations can confidently delegate complex cognitive processes.
         </p>
       </section>
@@ -56,18 +56,18 @@ export default function About() {
       {/* Narrative Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">The Aether AI Story</h2>
-          <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">The Aether AI Story</h2>
+          <p className="text-slate-400/90 text-base sm:text-lg leading-relaxed">
             In early 2024, our founders realized that chat interfaces were only the first phase of the generative AI revolution. While conversational chatbots are fun, businesses require agent loops that can query databases, run scripts, cross-reference data sources, and self-heal from failures.
           </p>
-          <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
+          <p className="text-slate-400/90 text-base sm:text-lg leading-relaxed">
             We built Aether AI from the ground up to support modular cognitive loops. Our agents don't just reply — they verify, evaluate, and complete the tasks they are assigned.
           </p>
         </div>
         <div className="p-8 rounded-2xl glass-panel relative flex flex-col justify-center border-brand-500/10 min-h-[260px]">
           <div className="space-y-4">
             <h3 className="text-brand-400 font-bold text-xs sm:text-sm tracking-wider uppercase">Founding Principle</h3>
-            <p className="text-white text-lg sm:text-xl font-semibold leading-relaxed">
+            <p className="text-white text-lg sm:text-xl font-medium italic leading-relaxed">
               "We believe the future of software isn't just static apps; it's a network of collaborative AI specialists operating within safe, auditable boundaries."
             </p>
             <div className="flex items-center space-x-2 pt-2 text-slate-400 text-xs sm:text-sm">
@@ -81,7 +81,7 @@ export default function About() {
       {/* Values Grid */}
       <section className="bg-dark-900/20 border-y border-dark-900/80 py-20 mb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white text-center mb-12">Our Core Values</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white text-center mb-12">Our Core Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((val, idx) => {
               const Icon = val.icon;
@@ -101,7 +101,7 @@ export default function About() {
 
       {/* Team Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-white text-center mb-12">Meet the Innovators</h2>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white text-center mb-12">Meet the Innovators</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {team.map((member, idx) => (
             <div key={idx} className="p-6 rounded-2xl glass-panel flex flex-col items-center text-center space-y-4">

@@ -93,13 +93,13 @@ export default function Home() {
             <Cpu className="h-3.5 w-3.5" />
             <span>Next-Generation AI Orchestration</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[1.05]">
             AI agents that <br className="hidden sm:inline" />
             <span className="bg-gradient-to-r from-brand-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">
               actually get work done.
             </span>
           </h1>
-          <p className="text-slate-400 text-lg sm:text-xl leading-relaxed">
+          <p className="text-slate-400/90 text-lg sm:text-xl md:text-xl/relaxed max-w-2xl font-medium">
             Move beyond simple prompt-and-response chatbots. Deploy autonomous AI agent networks that research, integrate, and execute complex business workflows.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
@@ -190,10 +190,10 @@ export default function Home() {
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
             Supercharge Operations with Autonomous Workforces
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg">
+          <p className="text-slate-400/90 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
             Aether AI supplies you with self-contained agent loops configured for distinct business operations.
           </p>
         </div>
@@ -214,9 +214,9 @@ export default function Home() {
                   <p className="text-slate-400 text-sm sm:text-base leading-relaxed">{feat.desc}</p>
                 </div>
                 <div className="mt-6 pt-4 border-t border-dark-900/50">
-                  <Link href="/services" className="text-brand-400 hover:text-brand-300 font-semibold text-xs inline-flex items-center space-x-1">
+                  <Link href="/services" className="text-brand-400 hover:text-brand-300 font-semibold text-sm inline-flex items-center space-x-1">
                     <span>Learn how it works</span>
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </div>
@@ -231,18 +231,18 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
             {/* Stats */}
             <div className="space-y-6 lg:col-span-1">
-              <h2 className="text-3xl font-extrabold text-white">The Impact in Numbers</h2>
-              <p className="text-slate-400 text-sm">
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">The Impact in Numbers</h2>
+              <p className="text-slate-400 text-base leading-relaxed">
                 Aether AI delivers enterprise efficiency improvements that directly compound bottom-line margins.
               </p>
               <div className="grid grid-cols-2 gap-6 pt-4">
                 <div>
-                  <h4 className="text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-black text-brand-400">99.8%</h4>
-                  <p className="text-slate-400 text-xs sm:text-sm mt-2 font-medium">Uptime SLA Gated</p>
+                  <h4 className="text-4xl sm:text-5xl lg:text-4xl xl:text-5xl font-black text-brand-400 tracking-tight">99.8%</h4>
+                  <p className="text-slate-400 text-xs sm:text-sm mt-2 font-semibold uppercase tracking-wider">Uptime SLA Gated</p>
                 </div>
                 <div>
-                  <h4 className="text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-black text-violet-400">10x+</h4>
-                  <p className="text-slate-400 text-xs sm:text-sm mt-2 font-medium">Operations Speedup</p>
+                  <h4 className="text-4xl sm:text-5xl lg:text-4xl xl:text-5xl font-black text-violet-400 tracking-tight">10x+</h4>
+                  <p className="text-slate-400 text-xs sm:text-sm mt-2 font-semibold uppercase tracking-wider">Operations Speedup</p>
                 </div>
               </div>
             </div>
@@ -275,19 +275,19 @@ export default function Home() {
       {/* Pricing Teaser */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
         <div className="max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white">Tailored for Any Scale</h2>
-          <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">Tailored for Any Scale</h2>
+          <p className="text-slate-400/90 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
             Start completely free to prototype your agents. Upgrade seamlessly as execution usage scales.
           </p>
         </div>        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {/* Plan 1 */}
           <div className="p-8 rounded-2xl glass-panel flex flex-col justify-between text-left">
             <div className="space-y-4">
-              <h3 className="text-white font-bold text-lg sm:text-xl">Developer</h3>
-              <p className="text-slate-400 text-xs sm:text-sm">For local testing and agent prototyping.</p>
+              <h3 className="text-white font-bold text-xl tracking-tight">Developer</h3>
+              <p className="text-slate-400 text-sm">For local testing and agent prototyping.</p>
               <div className="pt-2">
-                <span className="text-4xl sm:text-5xl font-black text-white">$0</span>
-                <span className="text-slate-400 text-xs sm:text-sm ml-1">/month</span>
+                <span className="text-5xl sm:text-6xl font-black text-white tracking-tight">$0</span>
+                <span className="text-slate-400 text-sm ml-1">/month</span>
               </div>
               <ul className="space-y-3 pt-6 text-sm text-slate-400">
                 <li className="flex items-center space-x-2">
@@ -315,11 +315,11 @@ export default function Home() {
               Most Popular
             </div>
             <div className="space-y-4">
-              <h3 className="text-white font-bold text-lg sm:text-xl">Growth</h3>
-              <p className="text-slate-400 text-xs sm:text-sm">For active business processes and automations.</p>
+              <h3 className="text-white font-bold text-xl tracking-tight">Growth</h3>
+              <p className="text-slate-400 text-sm">For active business processes and automations.</p>
               <div className="pt-2">
-                <span className="text-4xl sm:text-5xl font-black text-white">$149</span>
-                <span className="text-slate-400 text-xs sm:text-sm ml-1">/month</span>
+                <span className="text-5xl sm:text-6xl font-black text-white tracking-tight">$149</span>
+                <span className="text-slate-400 text-sm ml-1">/month</span>
               </div>
               <ul className="space-y-3 pt-6 text-sm text-slate-300">
                 <li className="flex items-center space-x-2">
@@ -348,10 +348,10 @@ export default function Home() {
           {/* Plan 3 */}
           <div className="p-8 rounded-2xl glass-panel flex flex-col justify-between text-left">
             <div className="space-y-4">
-              <h3 className="text-white font-bold text-lg sm:text-xl">Enterprise</h3>
-              <p className="text-slate-400 text-xs sm:text-sm">For high-throughput execution & custom models.</p>
+              <h3 className="text-white font-bold text-xl tracking-tight">Enterprise</h3>
+              <p className="text-slate-400 text-sm">For high-throughput execution & custom models.</p>
               <div className="pt-2">
-                <span className="text-4xl sm:text-5xl font-black text-white">Custom</span>
+                <span className="text-5xl sm:text-6xl font-black text-white tracking-tight">Custom</span>
               </div>
               <ul className="space-y-3 pt-6 text-sm text-slate-400">
                 <li className="flex items-center space-x-2">
@@ -379,7 +379,7 @@ export default function Home() {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-dark-900">
         <div className="text-center mb-12 space-y-4">
           <HelpCircle className="h-8 w-8 text-brand-500 mx-auto" />
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Frequently Asked Questions</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">Frequently Asked Questions</h2>
         </div>
 
         <div className="space-y-4">

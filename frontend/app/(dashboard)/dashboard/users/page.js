@@ -106,7 +106,7 @@ export default function UsersDashboard() {
         </p>
         <button
           onClick={() => router.push('/dashboard')}
-          className="px-4.5 py-2 bg-dark-900 border border-dark-850 hover:bg-dark-800 text-white text-sm font-semibold rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-dark-900 border border-dark-800 hover:bg-dark-850 text-white rounded-xl text-sm font-bold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-md"
         >
           Back to Overview
         </button>
@@ -118,7 +118,7 @@ export default function UsersDashboard() {
     <div className="space-y-8">
       {/* Title Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Users Auditing Portal</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white">Users Auditing Portal</h1>
         <p className="text-slate-400 text-sm mt-1">Audit active accounts, adjust platform roles, and clean up inactive tenants.</p>
       </div>
 
@@ -212,7 +212,7 @@ export default function UsersDashboard() {
               <X className="h-5 w-5" />
             </button>
 
-            <h2 className="text-xl font-bold text-white mb-2">Adjust User Role</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-white mb-2">Adjust User Role</h2>
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed mb-6">
               Update platform access credentials for <strong className="text-white">{selectedUser?.name}</strong>.
             </p>
@@ -274,7 +274,7 @@ export default function UsersDashboard() {
       {isDeleteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-950/75 backdrop-blur-sm">
           <div className="w-full max-w-md p-6 rounded-xl glass-panel border border-red-900/20 shadow-2xl relative">
-            <h3 className="text-lg font-bold text-white mb-2">Delete User Account</h3>
+            <h3 className="text-xl font-bold tracking-tight text-white mb-2">Delete User Account</h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Are you sure you want to delete <strong className="text-white">{selectedUser?.name}</strong>? This action will immediately revoke their dashboard access and delete all their configured agent records.
             </p>

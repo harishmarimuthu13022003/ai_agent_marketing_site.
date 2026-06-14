@@ -89,6 +89,14 @@ export const api = {
         return !!localStorage.getItem('aether_token');
       }
       return false;
+    },
+
+    seed: async () => {
+      const res = await fetch(`${API_URL}/auth/seed`, {
+        method: 'POST',
+        headers: getHeaders(),
+      });
+      return handleResponse(res);
     }
   },
 
