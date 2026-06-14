@@ -122,7 +122,7 @@ export default function Login() {
 
 
 
-        <p className="text-center text-xs text-slate-400">
+        <p className="text-center text-xs text-slate-400 mt-6">
           New to the system?{' '}
           <Link href="/register" className="text-brand-400 hover:underline font-medium">
             Create an Account

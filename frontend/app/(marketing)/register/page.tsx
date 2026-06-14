@@ -173,7 +173,7 @@ export default function Register() {
 
 
 
-        <p className="text-center text-xs text-slate-400">
+        <p className="text-center text-xs text-slate-400 mt-6">
           Already have an account?{' '}
           <Link href="/login" className="text-brand-400 hover:underline font-medium">
             Log In here
